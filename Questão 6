@@ -1,0 +1,106 @@
+public class Livro {
+    private String titulo;
+    private String autor;
+    private boolean disponivel;
+
+    public Livro(String titulo, String autor) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.disponivel = true;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public void emprestar() {
+        if (disponivel) {
+            disponivel = false;
+            System.out.println(titulo + " emprestado com sucesso");
+        } else {
+            System.out.println(titulo + " nao esta disponivel");
+        }
+    }
+
+    public void devolver() {
+        if (!disponivel) {
+            disponivel = true;
+            System.out.println(titulo + " devolvido");
+        } else {
+            System.out.println(titulo + "disponivel");
+        }
+    }
+}
+
+public class Biblioteca {
+    private Livro[] livros;
+    private int contador;
+
+    public Biblioteca(int capacidade) {
+        livros = new Livro[capacidade];
+        contador = 0;
+    }
+
+    public void adicionarLivro(Livro livro) {
+        if (contador < livros.length) {
+            livros[contador] = livro;
+            contador++;
+            System.out.println(livro.getTitulo() + " adicionado");
+        } else {
+            System.out.println("biblioteca cheia");
+        }
+    }
+
+    public void emprestarLivro(String titulo) {
+        for (int i = 0; i < contador; i++) {
+            if (livros[i].getTitulo().equals(titulo)) {
+                livros[i].emprestar();
+                return;
+            }
+        }
+        System.out.println("livro nao encontrado");
+    }
+
+    public void devolverLivro(String titulo) {
+        for (int i = 0; i < contador; i++) {
+            if (livros[i].getTitulo().equals(titulo)) {
+                livros[i].devolver();
+                return;
+            }
+        }
+        System.out.println("livro nao encontrado");
+    }
+
+    public void mostrarLivros() {
+        System.out.println("livros na biblioteca:");
+        for (int i = 0; i < contador; i++) {
+            String status = livros[i].isDisponivel() ? "disponivel" : "emprestado";
+            System.out.println(livros[i].getTitulo() + " - " + status);
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        Biblioteca biblioteca = new Biblioteca(5);
+
+        Livro livro1 = new Livro("o pequeno principe", "Antoine de Saint-Exupery");
+        Livro livro2 = new Livro("dom quixote", "Miguel de Cervantes");
+        Livro livro3 = new Livro("1984", "George Orwell");
+
+        biblioteca.adicionarLivro(livro1);
+        biblioteca.adicionarLivro(livro2);
+        biblioteca.adicionarLivro(livro3);
+
+        biblioteca.mostrarLivros();
+
+        biblioteca.emprestarLivro("1984");
+        biblioteca.mostrarLivros();
+
+        biblioteca.devolverLivro("1984");
+        biblioteca.mostrarLivros();
+    }
+}
